@@ -1,0 +1,92 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+struct Student {
+    string name;
+    string username;
+    string password;
+};
+
+struct Menu {
+    string name;
+    int price;
+};
+
+void registerStudent(vector<Student>& studentList) {
+    Student s;
+    cout << "\n---WELCOME TO THE REGISTRATION PAGE---\n" << endl;
+
+    cout << "Enter Student Name: ";
+    getline(cin, s.name);
+
+    cout << "Enter Student Username: ";
+    getline(cin, s.username);
+
+    cout << "Create a password: ";
+    getline(cin, s.password);
+
+    studentList.push_back(s);
+    cout << "\nRegistration successful! Welcome to the University of St.La Salle!" << endl;
+}
+
+bool loginStudent(const vector<Student>& studentList) {
+    string username, password;
+
+    cout << "\n===WELCOME BACK, STUDENT! PLEASE LOG IN YOUR CREDENTIALS BELOW.===\n" << endl;
+    cout << "Enter Student Username: ";
+    getline(cin, username);
+    cout << "Enter Password: ";
+    getline(cin, password);
+
+    for (const auto& student : studentList) {
+        if (student.username == username && student.password == password) {
+            return true;
+        }
+    }
+    return false;
+}
+
+int main() {
+    vector<Student> studentList;
+    string choice;
+    bool loggedIn = false;
+
+    do {
+        cout << "\n============== [UNIVERSITY OF ST.LA SALLE] ==============\n";
+        cout << "\n-> Register <-" << endl;
+        cout << "-> Login <-" << endl;
+        cout << "-> Exit <-" << endl;
+        cout << "\nPlease choose an action from the above: ";
+
+        getline(cin, choice);
+
+        if (choice == "Register") {
+            registerStudent(studentList);
+        }
+        else if (choice == "Login") {
+            if (studentList.empty()) {
+                cout << "\nNo accounts exist yet. Taking you to registration..." << endl;
+                registerStudent(studentList);
+            }
+            else if (loginStudent(studentList)) {
+                cout << "\nAction Successful!" << endl;
+                loggedIn = true;
+            }
+            else {
+                cout << "\nIncorrect username or password." << endl;
+            }
+        }
+        else if (choice == "Exit") {
+            cout << "Exiting program..." << endl;
+        }
+        else {
+            cout << "\nINVALID ACTION.\n" << endl;
+        }
+
+    } while (choice != "Exit");
+
+    return 0;
+}
